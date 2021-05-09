@@ -26,8 +26,12 @@ const ClickableTableCell = styled(TableCell)`
   cursor: pointer;
 `;
 
-const StyledInfoIcon = styled(InfoIcon)`
+const ClickableSpan = styled.span`
   margin-top: 6px;
+  color: #136CB2;
+  :hover {
+    text-decoration: underline;
+  }
 `;
 
 interface RowProps {
@@ -84,15 +88,12 @@ const Row = ({
   return (
     <React.Fragment>
       <TableRow>
-        <ClickableTableCell onClick={handleOnClickInfoIcon}>
-          <StyledInfoIcon />
-        </ClickableTableCell>
         <ClickableTableCell
           onClick={handleOnClickInfoIcon}
           component="th"
           scope="row"
         >
-          {show.Title}
+          <ClickableSpan>{show.Title}</ClickableSpan>
         </ClickableTableCell>
         <TableCell align="right">{show.Year}</TableCell>
         <TableCell align="right">
@@ -164,7 +165,6 @@ const ShowsTable = ({
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
               <TableCell>Title</TableCell>
               <TableCell align="right">Year</TableCell>
               <TableCell align="right">Type</TableCell>
