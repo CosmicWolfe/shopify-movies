@@ -11,7 +11,7 @@ import { Button, TablePagination } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import styled from "styled-components";
 import ShowInfoModal from "../ShowInfoModal/ShowInfoModal";
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const StyledButton = styled(Button)`
   background-color: #191970;
@@ -60,11 +60,9 @@ const Row = ({
         </StyledButton>
       );
     } else {
-      const disabled =
-        nominations.length >= 5 ||
-        nominations
-          .map((nomination) => nomination.imdbID)
-          .includes(show.imdbID);
+      const disabled = nominations
+        .map((nomination) => nomination.imdbID)
+        .includes(show.imdbID);
       return (
         <StyledButton
           disabled={disabled}
@@ -89,9 +87,13 @@ const Row = ({
         <ClickableTableCell onClick={handleOnClickInfoIcon}>
           <StyledInfoIcon />
         </ClickableTableCell>
-        <TableCell component="th" scope="row">
+        <ClickableTableCell
+          onClick={handleOnClickInfoIcon}
+          component="th"
+          scope="row"
+        >
           {show.Title}
-        </TableCell>
+        </ClickableTableCell>
         <TableCell align="right">{show.Year}</TableCell>
         <TableCell align="right">
           {show.Type[0].toUpperCase()}
@@ -129,6 +131,10 @@ interface ShowsTableProps {
   totalResults?: number;
 }
 
+/**
+ * A table to display shows.
+ * When the variant is 'search', make sure to also pass in page and totalResults
+ */
 const ShowsTable = ({
   shows,
   variant,
@@ -183,7 +189,7 @@ const ShowsTable = ({
         </Table>
         {isLoadingSearchResults && (
           <CircularProgressWrapper>
-            <CircularProgress size={100}/>
+            <CircularProgress size={100} />
           </CircularProgressWrapper>
         )}
         {variant === "search" && (

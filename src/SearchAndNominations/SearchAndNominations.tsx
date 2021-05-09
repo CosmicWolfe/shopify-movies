@@ -7,6 +7,7 @@ import MuiAlert from "@material-ui/lab/Alert";
 
 const HorizontalDiv = styled.div`
   display: flex;
+  
   @media screen and (max-width: 1100px) {
     flex-direction: column;
   }
@@ -70,14 +71,16 @@ const SearchAndNominations = ({
   setPageFilter,
 }: SearchAndNominationsProps) => {
   const [isSuccessSnackbarOpen, setIsSuccessSnackbarOpen] = useState(false);
+  const [isFailureSnackbarOpen, setIsFailureSnackbarOpen] = useState(false);
   const [nominations, setNominations] = useStickyState(
     INITIAL_NOMINATIONS,
     "nominations"
   );
 
   const addNomination = (show: Show) => {
-    if (nominations.length === 4) {
-      setIsSuccessSnackbarOpen(true);
+    if (nominations.length === 5) {
+      setIsFailureSnackbarOpen(true);
+      return;
     }
     setNominations([...nominations, show]);
   };
@@ -92,6 +95,16 @@ const SearchAndNominations = ({
   const handleCloseSuccessSnackbar = () => {
     setIsSuccessSnackbarOpen(false);
   };
+
+  const handleCloseFailureSnackbar = () => {
+    setIsFailureSnackbarOpen(false);
+  }
+
+  useEffect(() => {
+    if (nominations.length === 5) {
+      setIsSuccessSnackbarOpen(true);
+    }
+  }, [nominations]);
 
   return (
     <HorizontalDiv>
@@ -135,6 +148,15 @@ const SearchAndNominations = ({
       >
         <MuiAlert onClose={handleCloseSuccessSnackbar} severity="success">
           5 shows up for nomination!
+        </MuiAlert>
+      </Snackbar>
+      <Snackbar
+        open={isFailureSnackbarOpen}
+        autoHideDuration={5000}
+        onClose={handleCloseFailureSnackbar}
+      >
+        <MuiAlert onClose={handleCloseFailureSnackbar} severity="warning">
+          Cannot nominate more than 5 shows!
         </MuiAlert>
       </Snackbar>
     </HorizontalDiv>

@@ -164,7 +164,7 @@ function App() {
       <Header />
       <Body>
         <div>
-          <span>Search for your favourite shows by title and filter them by year and type! Nominate 5 shows!</span>
+          <span>Search for your favourite shows by title and filter them by year and type! Click into a show for more details and nominate 5 shows!</span>
         </div>
         <Filters
           searchFilters={searchFilters}
