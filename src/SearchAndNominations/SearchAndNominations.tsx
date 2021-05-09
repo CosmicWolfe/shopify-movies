@@ -1,19 +1,25 @@
 import { Snackbar } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Show } from "../AppConstants";
+import { INITIAL_NOMINATIONS, Show } from "../AppConstants";
 import ShowsTable from "../ShowsTable/ShowsTable";
 import MuiAlert from "@material-ui/lab/Alert";
 
 const HorizontalDiv = styled.div`
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
+  @media screen and (max-width: 1100px) {
+    flex-direction: column;
+  }
+  @media screen and (min-width: 1100px) {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+  }
 `;
 
 const HorizontalSpacer = styled.div`
   width: 32px;
+  height: 32px;
 `;
 
 const VerticalSpacer = styled.div`
@@ -26,13 +32,6 @@ const VerticalDiv = styled.div`
   width: 100%;
   align-items: center;
 `;
-
-interface SearchAndNominationsProps {
-  searchResults: Show[];
-  page: number;
-  totalResults: number;
-  setPageFilter: (page: number) => void;
-}
 
 /**
  * Credit to https://www.joshwcomeau.com/react/persisting-react-state-in-localstorage/
@@ -53,15 +52,26 @@ const useStickyState = (
   return [value, setValue];
 };
 
+interface SearchAndNominationsProps {
+  isLoadingSearchResults: boolean;
+  searchResults: Show[];
+  searchQuery: string;
+  page: number;
+  totalResults: number;
+  setPageFilter: (page: number) => void;
+}
+
 const SearchAndNominations = ({
+  isLoadingSearchResults,
   searchResults,
+  searchQuery,
   page,
   totalResults,
   setPageFilter,
 }: SearchAndNominationsProps) => {
   const [isSuccessSnackbarOpen, setIsSuccessSnackbarOpen] = useState(false);
   const [nominations, setNominations] = useStickyState(
-    [] as Show[],
+    INITIAL_NOMINATIONS,
     "nominations"
   );
 
@@ -87,7 +97,7 @@ const SearchAndNominations = ({
     <HorizontalDiv>
       <VerticalDiv>
         <div>
-          <b>Search Results</b>
+          <b>Search Results for "{searchQuery}"</b>
         </div>
         <VerticalSpacer />
         <ShowsTable
@@ -99,6 +109,7 @@ const SearchAndNominations = ({
           setPageFilter={setPageFilter}
           page={page}
           totalResults={totalResults}
+          isLoadingSearchResults={isLoadingSearchResults}
         />
       </VerticalDiv>
       <HorizontalSpacer />
@@ -114,6 +125,7 @@ const SearchAndNominations = ({
           handleRemoveNomination={removeNomination}
           nominations={nominations}
           setPageFilter={setPageFilter}
+          isLoadingSearchResults={false}
         />
       </VerticalDiv>
       <Snackbar

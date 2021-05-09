@@ -1,29 +1,41 @@
 import { BySearchParams, ShowType } from "../AppConstants";
-import TextField from "@material-ui/core/TextField";
 import styled from "styled-components";
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import { FormControl, Input, InputAdornment, InputLabel, MenuItem, Select } from "@material-ui/core";
+import SearchIcon from '@material-ui/icons/Search';
 
 const FilterRow = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: fit-content;
-  width: 100%;
+
+  @media screen and (max-width: 850px) {
+    flex-wrap: wrap;
+  }
+
+  @media screen and (min-width: 850px) {
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+  }
+`;
+
+const FilterBorder = styled.div`
+  padding: 12px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+  border-radius: 8px;
+  background-color: aliceblue;
+`;
+
+const SearchFilterWrapper = styled.div`
+  padding-right: 32px;
+  padding-top: 16px;
+  width: 400px;
 `;
 
 const FilterWrapper = styled.div`
-  padding-right: 36px;
-  width: 200px;
-`;
-
-const FilterTextField = styled(TextField)`
-  width: 100%;
-  background-color: aliceblue;
-`;
-
-const StyledFormControl = styled(FormControl)`
-  width: 200px;
-  background-color: aliceblue;
+  padding-right: 32px;
+  padding-top: 16px;
+  width: 150px;
 `;
 
 interface FilterProps {
@@ -54,40 +66,55 @@ const Filters = ({
   return (
     <>
       <FilterRow>
+        <SearchFilterWrapper>
+          <FilterBorder>
+            <InputLabel htmlFor="search-input">Search by show title</InputLabel>
+            <Input
+              id="search-input"
+              onChange={handleTitleChange}
+              type={"search"}
+              value={searchFilters.s}
+              startAdornment={
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              }
+              style={{width: 376}}
+              required={true}
+            />
+          </FilterBorder>
+        </SearchFilterWrapper>
         <FilterWrapper>
-          <FilterTextField
-            label={" Search by show title"}
-            onChange={handleTitleChange}
-            type={"text"}
-            variant={"standard"}
-            value={searchFilters.s}
-          />
+          <FilterBorder>
+            <InputLabel htmlFor="year-input">Release Year</InputLabel>
+            <Input
+              id="year-input"
+              onChange={handleYearChange}
+              type={"number"}
+              value={searchFilters.y}
+              style={{width: 126}}
+            />
+          </FilterBorder>
         </FilterWrapper>
         <FilterWrapper>
-          <FilterTextField
-            label={" Filter by year of release"}
-            onChange={handleYearChange}
-            type={"number"}
-            variant={"standard"}
-            value={searchFilters.y}
-          />
+          <FilterBorder>
+            <FormControl variant="standard" style={{width: 126}}>
+              <div className={'MuiFormLabel-root MuiInputLabel-root MuiInputLabel-animated'}>
+                Show Type
+              </div>
+              <Select value={searchFilters.type} onChange={handleTypeChange}>
+                <MenuItem value={''}>
+                  <em>None</em>
+                </MenuItem>
+                <MenuItem value={"movie"}>Movie</MenuItem>
+                <MenuItem value={"series"}>Series</MenuItem>
+                <MenuItem value={"episode"}>Episode</MenuItem>
+              </Select>
+            </FormControl>
+          </FilterBorder>
         </FilterWrapper>
-        <FilterWrapper>
-          <StyledFormControl variant="standard">
-            <InputLabel htmlFor="outlined-select-show-type">
-              {" "}
-              Filter by show type
-            </InputLabel>
-            <Select value={searchFilters.type} onChange={handleTypeChange}>
-              <MenuItem value={""}>
-                <em>None</em>
-              </MenuItem>
-              <MenuItem value={"movie"}>Movie</MenuItem>
-              <MenuItem value={"series"}>Series</MenuItem>
-              <MenuItem value={"episode"}>Episode</MenuItem>
-            </Select>
-          </StyledFormControl>
-        </FilterWrapper>
+
+
       </FilterRow>
     </>
   );

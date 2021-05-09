@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { API_KEY, OMDB_URL, ShowData } from "../AppConstants";
+import { API_KEY, INITIAL_SHOW_INFO_MODAL_DATA, OMDB_URL, ShowData } from "../AppConstants";
 
 const ModalBackground = styled.div`
   z-index: 10000;
@@ -57,21 +57,11 @@ interface ShowInfoModalProps {
 }
 
 const ShowInfoModal = ({ isOpen, setIsOpen, imdbID }: ShowInfoModalProps) => {
-  const [showData, setShowData] = useState({
-    Title: "Title",
-    Type: "movie",
-    Year: "2020",
-    imdbRating: "10",
-    Genre: "Action",
-    Plot: "Plot",
-    Poster: "N/A",
-  } as ShowData);
+  const [showData, setShowData] = useState(INITIAL_SHOW_INFO_MODAL_DATA);
   const modalContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log("useeffect", imdbID);
     if (isOpen && imdbID !== "") {
-      console.log("in");
       const url = `${OMDB_URL}/?apikey=${API_KEY}&i=${imdbID}&plot=full`;
       axios.get(url).then((response) => {
         if (response.data["Response"] === "True") {

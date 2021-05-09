@@ -11,6 +11,7 @@ import { Button, TablePagination } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import styled from "styled-components";
 import ShowInfoModal from "../ShowInfoModal/ShowInfoModal";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const StyledButton = styled(Button)`
   background-color: #191970;
@@ -26,7 +27,7 @@ const ClickableTableCell = styled(TableCell)`
 `;
 
 const StyledInfoIcon = styled(InfoIcon)`
-  margin-top: 2px;
+  margin-top: 6px;
 `;
 
 interface RowProps {
@@ -60,9 +61,9 @@ const Row = ({
       );
     } else {
       const disabled =
-        nominations?.length >= 5 ||
+        nominations.length >= 5 ||
         nominations
-          ?.map((nomination) => nomination.imdbID)
+          .map((nomination) => nomination.imdbID)
           .includes(show.imdbID);
       return (
         <StyledButton
@@ -79,7 +80,6 @@ const Row = ({
   })();
 
   const handleOnClickInfoIcon = () => {
-    console.log("on click info icon called");
     openShowInfoModal(show.imdbID);
   };
 
@@ -107,15 +107,24 @@ const TableWrapper = styled.div`
   box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 70%),
     0px 1px 1px 0px rgb(0 0 0 / 70%), 0px 1px 3px 0px rgb(0 0 0 / 70%);
   width: 100%;
+  min-width: 500px;
+`;
+
+const CircularProgressWrapper = styled.div`
+  padding: 36px;
+  display: flex;
+  justify-content: center;
+  width: calc(100%-72px);
 `;
 
 interface ShowsTableProps {
   shows: Show[];
   variant: "nomination" | "search";
+  nominations: Show[];
+  isLoadingSearchResults: boolean;
   handleRemoveNomination: (imdbID: string) => void;
   handleAddNomination: (show: Show) => void;
   setPageFilter: (page: number) => void;
-  nominations: Show[];
   page?: number;
   totalResults?: number;
 }
@@ -124,6 +133,7 @@ const ShowsTable = ({
   shows,
   variant,
   nominations,
+  isLoadingSearchResults,
   page,
   totalResults,
   setPageFilter,
@@ -155,20 +165,27 @@ const ShowsTable = ({
               <TableCell align="right"></TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {shows.map((show) => (
-              <Row
-                key={show.imdbID}
-                show={show}
-                variant={variant}
-                nominations={nominations}
-                handleRemoveNomination={handleRemoveNomination}
-                handleAddNomination={handleAddNomination}
-                openShowInfoModal={openShowInfoModal}
-              />
-            ))}
-          </TableBody>
+          {!isLoadingSearchResults && (
+            <TableBody>
+              {shows.map((show) => (
+                <Row
+                  key={show.imdbID}
+                  show={show}
+                  variant={variant}
+                  nominations={nominations}
+                  handleRemoveNomination={handleRemoveNomination}
+                  handleAddNomination={handleAddNomination}
+                  openShowInfoModal={openShowInfoModal}
+                />
+              ))}
+            </TableBody>
+          )}
         </Table>
+        {isLoadingSearchResults && (
+          <CircularProgressWrapper>
+            <CircularProgress size={100}/>
+          </CircularProgressWrapper>
+        )}
         {variant === "search" && (
           <TablePagination
             rowsPerPageOptions={[10]}
