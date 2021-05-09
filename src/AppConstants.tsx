@@ -56,8 +56,8 @@ export const INITIAL_SEARCH_QUERY = 'Jamie';
 // :)
 export const INITIAL_NOMINATIONS : Show[] = [
     {"Title":"Jamie","Year":"2016","imdbID":"tt5684820","Type":"movie"},
-    {"Title":"The Intern","Year":"2015","imdbID":"tt2361509","Type":"movie"},
-    {"Title":"The Shop","Year":"2018-","imdbID":"tt8755712","Type":"series"}, // Closest I could get to Shopify XD
+    {"Title":"Intern","Year":"2000","imdbID":"tt0202989","Type":"movie"},
+    {"Title":"At The Shop","Year":"2013-","imdbID":"tt2933318","Type":"series"}, // Closest I could get to At Shopify XD
     {"Title":"Fall","Year":"1997","imdbID":"tt0119098","Type":"movie"},
     {"Title":"2021","Year":"2013","imdbID":"tt2243215","Type":"movie"},
 ];

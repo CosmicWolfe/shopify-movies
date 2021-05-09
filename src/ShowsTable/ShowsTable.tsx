@@ -61,7 +61,6 @@ const Row = ({
       );
     } else {
       const disabled =
-        nominations.length >= 5 ||
         nominations
           .map((nomination) => nomination.imdbID)
           .includes(show.imdbID);
@@ -89,9 +88,9 @@ const Row = ({
         <ClickableTableCell onClick={handleOnClickInfoIcon}>
           <StyledInfoIcon />
         </ClickableTableCell>
-        <TableCell component="th" scope="row">
+        <ClickableTableCell onClick={handleOnClickInfoIcon} component="th" scope="row">
           {show.Title}
-        </TableCell>
+        </ClickableTableCell>
         <TableCell align="right">{show.Year}</TableCell>
         <TableCell align="right">
           {show.Type[0].toUpperCase()}
@@ -129,6 +128,10 @@ interface ShowsTableProps {
   totalResults?: number;
 }
 
+/**
+ * A table to display shows.
+ * When the variant is 'search', make sure to also pass in page and totalResults
+ */
 const ShowsTable = ({
   shows,
   variant,
@@ -158,7 +161,7 @@ const ShowsTable = ({
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
+              <TableCell>Details</TableCell>
               <TableCell>Title</TableCell>
               <TableCell align="right">Year</TableCell>
               <TableCell align="right">Type</TableCell>

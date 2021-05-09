@@ -19,11 +19,13 @@ const ModalBackground = styled.div`
 const ModalContainer = styled.div`
   padding: 16px;
   background-color: white;
-  width: 70%;
-  height: 70%;
+  max-width: 70%;
+  max-height: 70%;
   display: flex;
   flex-direction: row;
   overflow-y: scroll;
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 70%),
+    0px 1px 1px 0px rgb(0 0 0 / 70%), 0px 1px 3px 0px rgb(0 0 0 / 70%);
 `;
 
 const VerticalDiv = styled.div`
